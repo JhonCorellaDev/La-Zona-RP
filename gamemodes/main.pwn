@@ -6106,13 +6106,7 @@ new Intro_Skins[][] =
 
 new Intro_Music[][] =
 {
-	/*"https://www.dropbox.com/s/u8mjyl5khi9sr1b/srp.mp3?dl=1",
-	"https://www.dropbox.com/s/m2hwiyq94ow8eff/kool.mp3?dl=1",
-	"https://www.dropbox.com/s/xyru1ik1e72r5qg/give.mp3?dl=1"*/
-	//"https://a.tumblr.com/tumblr_po4he6OXmo1ubdw5yo1.mp3"
-	//"https://a.tumblr.com/tumblr_ptmomnSJnc1ubdw5yo1.mp3"
-	//"https://a.tumblr.com/tumblr_puvjtsHtwb1ubdw5yo1.mp3"
-	"https://a.tumblr.com/tumblr_pwukj1SsIf1ubdw5yo1.mp3"
+	"https://www.cjoint.com/doc/22_11/LKxv2Lu6tVI_audio-intro.mp3"
 };
 
 
