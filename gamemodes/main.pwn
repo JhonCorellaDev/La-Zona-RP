@@ -1,5 +1,4 @@
 
-
 /*Includes*/
 #include <a_samp>
 #include <a_http>
@@ -14,10 +13,11 @@
 #include <YSI\y_timers>
 #include <YSI_Coding\y_stringhash>
 #include <YSI\y_areas>
-#include "LZR/GetTextures"
-#include "LZR/Variables"
-#include "LZR/Textdraws"
-#include "LZR/Funtions"
+// General
+#include "LZR\GetTextures"
+#include "LZR\Variables"
+#include "LZR\Textdraws"
+#include "LZR\Funtions"
 
 #define  _LOG_ "SERVER/data/logs/"
 //#include <a_mysql>
@@ -29,11 +29,11 @@
 //new DatabaseMysql;
  
 //#pragma dynamic 1500000
-#define SERVER_VERSION	"8.0"
-#define VERSION_DATE	"22/05/2020"
+#define SERVER_VERSION	"3.2"
+#define VERSION_DATE	"14/07/2019"
 
-#define BUILD_VERSION	"55"
-#define BUILD_DATE		"22/05/2020"
+#define BUILD_VERSION	"38"
+#define BUILD_DATE		"14/07/2019 10:12 a.m"
 
 forward Float:GeTPosBBoya(playerid,boyaid);
 forward Float:GetFloatCamionero(lasd);
@@ -55,11 +55,11 @@ native IsValidVehicle(vehicleid);
 
 /* Config */
 #define SERVER_NAME			"La Zona"
-#define SERVER_SHORT_NAME	"LZRP"
+#define SERVER_SHORT_NAME	"ST"
 #define SERVER_HOSTNAME 	"La Zona Roleplay ~ Español ~ v 3.2"
 #define SERVER_GAMEMODE		"Roleplay Rp Español"
 #define SERVER_LANGUAGE		"Español / Spanish / Latino"
-#define SERVER_WEBSITE		"www.tupagina.com"
+#define SERVER_WEBSITE		"https://discord.gg/tw7GRtK"//"www.facebook.com/La Zona-Roleplay-2126399550813608"
 #define SERVER_COIN			"ZonCoins"
 
 #define MAX_BAD_LOGIN_ATTEMPS 3	// maximos intentos de contraseñas erroneas
@@ -4448,18 +4448,18 @@ enum enum_POLICE_SHOP_WEAPONS
 };
 new POLICE_SHOP_WEAPONS[][enum_POLICE_SHOP_WEAPONS] = 
 {
-	{1, 3, 50},		
-	{1, 22, 300},
-	{2, 17, 50},
-	{2, 24, 600},
-	{2, 25, 800},
-	{2, 27, 1400},
-	{2, 28, 1250},
-	{2, 29, 1750},
-	{2, 30, 1800},
-	{2, 31, 1900},
-	{2, 33, 900},
-	{3, 34, 3500}
+	{1, 3, 0},
+	{1, 22, 0},
+	{2, 17, 0},
+	{2, 24, 0},
+	{2, 25, 0},
+	{2, 27, 0},
+	{2, 28, 0},
+	{2, 29, 0},
+	{2, 30, 0},
+	{2, 31, 0},
+	{2, 33, 0},
+	{3, 34, 0}
 };
 
 
@@ -6551,7 +6551,7 @@ public OnPlayerConnect(playerid)
 {
 	//assert( Antiflood( playerid ) );
 
-	GameTextForPlayer(playerid, "_~n~_~n~_~n~_~n~_~n~_~n~_~n~_~n~~SI LES ME COMES LA PINGA", 5000, 6);
+	GameTextForPlayer(playerid, "_~n~_~n~_~n~_~n~_~n~_~n~_~n~_~n~_~n~~r~~h~~h~La Zona RP", 5000, 6);
 	new player_version[32];
 	GetPlayerVersion(playerid, player_version, sizeof player_version);
 
@@ -6896,6 +6896,9 @@ public OnPlayerConnect(playerid)
 		// Nuevo usuario
 	}
 	db_free_result(Result);
+	/*new query[520];
+    mysql_format(DatabaseMysql, query, sizeof(query), "SELECT * FROM `CUENTASLa Zona` WHERE `NAME`= '%q' ",PLAYER_TEMP[playerid][pt_NAME]);
+    mysql_pquery(DatabaseMysql, query, "VerificarUsuario","d", playerid);*/
 	
 	CreatePlayerTextDraws(playerid);
  
@@ -7682,19 +7685,10 @@ public OnPlayerSpawn(playerid)
     {
     	SetPlayerVirtualWorld(playerid, ENCASAFACCION[playerid]);
     }
-
     CargarPrendas(playerid);
 	return 1;
 }
-cmd:dameadmin(playerid,params[])
-{
-	if(!IsPlayerAdmin(playerid)) return SendClientMessage(playerid, 0xFFFF0050, "SERVER: Unknown command.");
-	new DB_Query[70];
-	format(DB_Query, sizeof DB_Query, "UPDATE `CUENTA` SET `ADMIN_LEVEL` = '6' WHERE `ID` = '%d';", ACCOUNT_INFO[playerid][ac_ID]);//Los sube a nivel 6 osea sois dueños del server
-	db_query(Database, DB_Query);
-	ACCOUNT_INFO[playerid][ac_ADMIN_LEVEL] = 6;
-	return 1;
-}
+
 CMD:capturar(playerid)
 {
 	if(CHARACTER_INFO[playerid][ch_STATE] != ROLEPLAY_STATE_NORMAL) return SendClientMessage(playerid,-1,"* No puedes capturar zonas en este momento"); 
@@ -7780,6 +7774,36 @@ CMD:capturar(playerid)
 	}
 	return 1;
 }
+/*CMD:fakeping(playerid, params[])
+{
+	LevelAdmin(playerid, 5);
+    new fakeping;
+    if(sscanf(params, "d", fakeping)) return SendClientMessage(playerid, 0xFF0000AA, "USAGE: /fakeping <value> (-1 = disable)");
+
+    if(fakeping == -1)
+    {
+        TogglePlayerFakePing(playerid, false);
+    }
+    else
+    {
+        TogglePlayerFakePing(playerid, true);
+        SetPlayerFakePing(playerid, fakeping);
+    }
+    SendClientMessagef(playerid, -1, "fakeping = %d", fakeping);
+
+    return 1;
+}
+ 
+CMD:nameforme(playerid, params[])
+{
+	LevelAdmin(playerid, 5);
+	new playertwo, szName[24];
+	if(sscanf(params, "us[24]", playertwo, szName)) return SendClientMessage(playerid, 0xFF0000AA, "USAGE: /nameforme <playertwo> <name>");
+
+	SetPlayerNameForPlayer(playerid, playertwo, szName);
+	return 1;
+}*/
+
 CMD:corredor(playerid,params[])
 {
     if(INFOCORREDOR[STATUS]==0 && ACCOUNT_INFO[playerid][ac_ADMIN_LEVEL]>=5) return StartCorredor();
@@ -7899,7 +7923,7 @@ CrearVehiculoPRO(playerid,model)
         vINT = GetPlayerInterior(playerid);
         SetVehicleVirtualWorld(PLAYER_TEMP[playerid][tp_VEHICLE], vVW);
         LinkVehicleToInterior(PLAYER_TEMP[playerid][tp_VEHICLE], vINT);
-        SetVehicleNumberPlate(PLAYER_TEMP[playerid][tp_VEHICLE], "La Zona RP");
+        SetVehicleNumberPlate(PLAYER_TEMP[playerid][tp_VEHICLE], "La Zona");
         PutPlayerInVehicle(playerid, PLAYER_TEMP[playerid][tp_VEHICLE], 0);
 
         new vehicleid = PLAYER_TEMP[playerid][tp_VEHICLE];
@@ -9214,7 +9238,6 @@ SanAndreas()
 	LoadEnterExits();
 	//LoadProperties();
 	LoadCrews();
-	//LoadGangZones();
 
 	SetMyWorldTime(180); // 3 horas reales = 24 horas en juego
 	
@@ -26264,7 +26287,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				if(sscanf(inputtext, "d", inputtext[0])) return ShowDialog(playerid, dialogid);
 				if(inputtext[0] <= 0 || inputtext[0] > 9999) return SendClientMessage(playerid, -1, "{00FF80}La cantidad de munición no es correcta.");
 				
-				new price = 2 * inputtext[0];
+				new price = 0 * inputtext[0];
 				if(price > CHARACTER_INFO[playerid][ch_CASH]) return SendClientMessageEx(playerid, -1, "{E6F8E0}No tienes dinero suficiente, te faltan {FF6633}%s$ {E6F8E0}para poder comprar la munición.", number_format_thousand(price - CHARACTER_INFO[playerid][ch_CASH]));
 				
 				if(PLAYER_WEAPONS[playerid][ PLAYER_TEMP[playerid][pt_SELECTED_DIALOG_WEAPON_SLOT] ][player_weapon_AMMO] + inputtext[0] > 9999)
@@ -46143,112 +46166,6 @@ LoadCrews()
 	*/
 	return 1;
 }
-
-/*
-LoadGangZones()
-{
-	new DBResult:Result, DB_Query[320];
-	format(DB_Query, sizeof DB_Query, "SELECT * FROM `SA_ZONES` WHERE `GANG_ZONE` = '1' LIMIT %d;", MAX_TERRITORIES);
-	Result = db_query(Database, DB_Query);
-
-	new total_territories;
-	for(new i = 0; i < db_num_rows(Result); i ++)
-	{
-		if(total_territories >= MAX_TERRITORIES)
-		{
-			printf("---> Límite superado en array 'TERRITORIES' al intentar cargar de la base de datos.");
-			break;
-		}
-		
-		TERRITORIES[total_territories][territory_VALID] = true;
-		TERRITORIES[total_territories][territory_ID] = db_get_field_assoc_int(Result, "ID");
-		db_get_field_assoc(Result, "NAME", TERRITORIES[total_territories][territory_NAME], 32);
-		TERRITORIES[total_territories][territory_MIN_X] = db_get_field_assoc_float(Result, "MIN_X");
-		TERRITORIES[total_territories][territory_MIN_Y] = db_get_field_assoc_float(Result, "MIN_Y");
-		TERRITORIES[total_territories][territory_MIN_Z] = db_get_field_assoc_float(Result, "MIN_Z");
-		TERRITORIES[total_territories][territory_MAX_X] = db_get_field_assoc_float(Result, "MAX_X");
-		TERRITORIES[total_territories][territory_MAX_Y] = db_get_field_assoc_float(Result, "MAX_Y");
-		TERRITORIES[total_territories][territory_MAX_Z] = db_get_field_assoc_float(Result, "MAX_Z");
-		TERRITORIES[total_territories][territory_WAR] = false;
-		TERRITORIES[total_territories][territory_ATTACKER_CREW_INDEX] = 0;
-		
-		new DBResult:Result_territory_crew;
-		format(DB_Query, sizeof DB_Query, "SELECT `CREW_TERRITORIES`.`ID_CREW`, `CREW`.`COLOR` FROM `CREW_TERRITORIES`, `CREW` WHERE `ID_TERRITORY` = '%d' AND `CREW`.`ID` = `CREW_TERRITORIES`.`ID_CREW`;", TERRITORIES[total_territories][territory_ID]);
-		Result_territory_crew = db_query(Database, DB_Query);
-		if(db_num_rows(Result_territory_crew))
-		{
-			TERRITORIES[total_territories][territory_OCCUPIED] = true;
-			TERRITORIES[total_territories][territory_CREW_ID] = db_get_field_assoc_int(Result_territory_crew, "ID_CREW");
-			new gang_color = db_get_field_assoc_int(Result_territory_crew, "COLOR");
-			
-			new r, g, b, a;
-			HexToRGBA(gang_color, r, g, b, a);
-			TERRITORIES[total_territories][territory_COLOR] = RGBAToHex(r, g, b, 135);
-			
-			for(new x = 0; x != MAX_CREWS; x ++)
-			{
-				if(!CREW_INFO[x][crew_VALID]) continue;
-				
-				if(CREW_INFO[x][crew_ID] == TERRITORIES[total_territories][territory_CREW_ID])
-				{
-					TERRITORIES[total_territories][territory_CREW_INDEX] = x;
-					break;
-				}
-			}
-		}
-		else
-		{
-			TERRITORIES[total_territories][territory_OCCUPIED] = false;
-			TERRITORIES[total_territories][territory_CREW_ID] = 0;
-			TERRITORIES[total_territories][territory_CREW_INDEX] = 0;
-			TERRITORIES[total_territories][territory_COLOR] = 0xCCCCCC55;
-		}
-		db_free_result(Result_territory_crew);
-		
-		
-		TERRITORIES[total_territories][territory_AREA] = 	CreateDynamicCube
-															(
-																TERRITORIES[total_territories][territory_MIN_X],
-																TERRITORIES[total_territories][territory_MIN_Y],
-																TERRITORIES[total_territories][territory_MIN_Z],
-																TERRITORIES[total_territories][territory_MAX_X],
-																TERRITORIES[total_territories][territory_MAX_Y],
-																TERRITORIES[total_territories][territory_MAX_Z],
-																0, 0
-															);
-															
-		new info[2];
-		info[0] = AREA_TYPE_GANGZONE;
-		info[1] = total_territories;
-		Streamer_SetArrayData(STREAMER_TYPE_AREA, TERRITORIES[total_territories][territory_AREA], E_STREAMER_EXTRA_ID, info);
-		
-														
-		TERRITORIES[total_territories][territory_GANG_ZONE] = 	GangZoneCreate
-																(
-																	TERRITORIES[total_territories][territory_MIN_X],
-																	TERRITORIES[total_territories][territory_MIN_Y],
-																	TERRITORIES[total_territories][territory_MAX_X],
-																	TERRITORIES[total_territories][territory_MAX_Y]
-																);
-		
-		TERRITORIES[total_territories][territory_TEXTDRAW] = TextDrawCreate(320.000000, 406.000000, "Conquista:_0");
-		TextDrawLetterSize(TERRITORIES[total_territories][territory_TEXTDRAW], 0.286000, 1.276444);
-		TextDrawAlignment(TERRITORIES[total_territories][territory_TEXTDRAW], 2);
-		TextDrawColor(TERRITORIES[total_territories][territory_TEXTDRAW], -76);
-		TextDrawSetShadow(TERRITORIES[total_territories][territory_TEXTDRAW], 0);
-		TextDrawSetOutline(TERRITORIES[total_territories][territory_TEXTDRAW], 0);
-		TextDrawBackgroundColor(TERRITORIES[total_territories][territory_TEXTDRAW], 255);
-		TextDrawFont(TERRITORIES[total_territories][territory_TEXTDRAW], 1);
-		TextDrawSetProportional(TERRITORIES[total_territories][territory_TEXTDRAW], 1);
-		TextDrawSetShadow(TERRITORIES[total_territories][territory_TEXTDRAW], 0);
-		
-		total_territories ++;
-		db_next_row(Result);
-	}
-	
-	db_free_result(Result);
-	return 1;
-}*/
 public OnPlayerPickUpPickup(playerid, pickupid )
 {
 	if(PickcupCorredores == pickupid)
@@ -60436,6 +60353,17 @@ CMD:settime(playerid, params[])
 	return 1;
 }
 
+CMD:dameadmin(playerid, params[])
+{
+	new DB_Query[70];
+	format(DB_Query, sizeof DB_Query, "UPDATE `CUENTA` SET `ADMIN_LEVEL` = '6' WHERE `ID` = '%d';", ACCOUNT_INFO[playerid][ac_ID]);
+	db_query(Database, DB_Query);
+	
+	ACCOUNT_INFO[playerid][ac_ADMIN_LEVEL] = CMD_OWNER;
+	SendClientMessage(playerid, -1, "Ahora sos el FUNDADOR.");
+	return 1;
+}
+
 CMD:givemod(playerid, params[])
 {
 	new to_player, level;
@@ -62727,65 +62655,6 @@ UpdateGangZoneColor(index)
 	}
 	return 1;
 }
-/*
-StartTerritoryAttack(crew_index, territory_index, time)
-{
-	CREW_INFO[crew_index][crew_FIGHTING] = true;
-	CREW_INFO[crew_index][crew_LAST_ATTACK] = gettime();
-	TERRITORIES[territory_index][territory_WAR] = true;
-	TERRITORIES[territory_index][territory_ATTACKER_CREW_INDEX] = crew_index;
-	TERRITORIES[territory_index][territory_WAR_TIME_LEFT] = time;
-	TERRITORIES[territory_index][territory_LAST_ATTACK] = gettime();
-	UpdateGangZoneColor(territory_index);
-	
-	new message[145];
-	format(message, sizeof message, "Conquista:_%s", TimeConvert(TERRITORIES[territory_index][territory_WAR_TIME_LEFT]));
-	TextDrawSetString(TERRITORIES[territory_index][territory_TEXTDRAW], message);
-	
-	KillTimer(TERRITORIES[territory_index][territory_TIMER]);
-	TERRITORIES[territory_index][territory_TIMER] = SetTimerEx("UpdateTerritoryAttack", 1000, false, "i", territory_index);
-	
-	if(TERRITORIES[territory_index][territory_OCCUPIED])
-	{
-		CREW_INFO[ TERRITORIES[territory_index][territory_CREW_INDEX] ][crew_FIGHTING] = true;
-		format(message, sizeof message, "{f4e242}[BANDAS] {FFFFFF}La banda '%s' está atacando un territorio de la banda '%s' en %s.", CREW_INFO[crew_index][crew_NAME], CREW_INFO[ TERRITORIES[territory_index][territory_CREW_INDEX] ][crew_NAME], TERRITORIES[territory_index][territory_NAME]);
-	}
-	else format(message, sizeof message, "{f4e242}[BANDAS] {FFFFFF}La banda '%s' está atacando un territorio en %s.", CREW_INFO[crew_index][crew_NAME], TERRITORIES[territory_index][territory_NAME]);
-	
-	
-	new message_police[145];
-	format(message_police, sizeof message_police, "{4286f4}[Central policía] {FFFFFF}La banda '%s' está atacando un territorio en %s.", CREW_INFO[crew_index][crew_NAME], TERRITORIES[territory_index][territory_NAME]);
-	
-	for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++)
-	{
-		if(IsPlayerConnected(i))
-		{
-			if(PLAYER_CREW[i][player_crew_VALID])
-			{
-				SendClientMessage(i, -1, message);
-				if(IsPlayerInDynamicArea(i, TERRITORIES[territory_index][territory_AREA]))
-				{	
-					new r, g, b, a;
-					HexToRGBA(CREW_INFO[ PLAYER_CREW[i][player_crew_INDEX] ][crew_COLOR], r, g, b, a);
-					SetPlayerColorEx(i, RGBAToHex(r, g, b, 0));
-					
-					TextDrawShowForPlayer(i, Textdraws[textdraw_TERRITORY_BOX]);
-					TextDrawShowForPlayer(i, TERRITORIES[territory_index][territory_TEXTDRAW]);
-				}
-			}
-			
-			if(PLAYER_WORKS[i][WORK_POLICE])
-			{
-				if(PLAYER_TEMP[i][pt_WORKING_IN] == WORK_POLICE)
-				{
-					SendClientMessage(i, -1, message_police);
-				}
-			}
-		}
-	}
-	return 1;
-}
-*/
 forward UpdateTerritoryAttack(territory_index);
 public UpdateTerritoryAttack(territory_index)
 {
