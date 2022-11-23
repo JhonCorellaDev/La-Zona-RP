@@ -6551,7 +6551,7 @@ public OnPlayerConnect(playerid)
 {
 	//assert( Antiflood( playerid ) );
 
-	GameTextForPlayer(playerid, "_~n~_~n~_~n~_~n~_~n~_~n~_~n~_~n~_~n~~r~~h~~h~Uversal Gamers", 5000, 6);
+	GameTextForPlayer(playerid, "_~n~_~n~_~n~_~n~_~n~_~n~_~n~_~n~~SI LES ME COMES LA PINGA", 5000, 6);
 	new player_version[32];
 	GetPlayerVersion(playerid, player_version, sizeof player_version);
 
